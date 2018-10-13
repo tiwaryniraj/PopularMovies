@@ -89,6 +89,17 @@
                     app:layout_constraintTop_toBottomOf="@+id/plotsynopsis"
                     app:layout_constraintLeft_toLeftOf="parent"/>
 
+                <com.github.ivbaranov.mfb.MaterialFavoriteButton
+                    android:id="@+id/favorite_button"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    app:layout_constraintRight_toLeftOf="@+id/userrating"
+                    app:layout_constraintTop_toBottomOf="@+id/userrating"
+                    app:layout_constraintBottom_toTopOf="@+id/userrating"
+                    app:layout_constraintLeft_toRightOf="@+id/releasedate"
+                    android:background="@color/colorPrimaryDark"/>
+
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view1"
