@@ -66,8 +66,8 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.MyViewHolder> 
         public MyViewHolder(View view){
 
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
-            userrating = (TextView) view.findViewById(R.id.userrating);
+            title = view.findViewById(R.id.title);
+            userrating = view.findViewById(R.id.userrating);
             view.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){

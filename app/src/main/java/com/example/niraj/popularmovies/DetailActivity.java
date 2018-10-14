@@ -113,7 +113,7 @@ public class DetailActivity extends AppCompatActivity {
             Toast.makeText(this, "No API Data", Toast.LENGTH_SHORT).show();
         }
 
-        MaterialFavoriteButton materialFavoriteButton = (MaterialFavoriteButton) findViewById(R.id.favorite_button);
+        MaterialFavoriteButton materialFavoriteButton = findViewById(R.id.favorite_button);
 
         if (Exists(movieName)){
             materialFavoriteButton.setFavorite(true);
