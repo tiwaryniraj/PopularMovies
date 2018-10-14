@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     ProgressDialog pd;
     private SwipeRefreshLayout swipeContainer;
     private FavoriteDbHelper favoriteDbHelper;
-    private AppCompatActivity activity = MainActivity.this;
+    private final AppCompatActivity activity = MainActivity.this;
     public static final String LOG_TAG = MoviesAdapter.class.getName();
-    int cacheSize = 10 * 1024 * 1024;
+    final int cacheSize = 10 * 1024 * 1024;
 
 
     @Override

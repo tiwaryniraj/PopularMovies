@@ -20,8 +20,8 @@ import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHolder> {
 
-    private Context mContext;
-    private List<Movie> movieList;
+    private final Context mContext;
+    private final List<Movie> movieList;
 
 
     public MoviesAdapter(Context mContext, List<Movie> movieList){
@@ -61,8 +61,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView title, userrating;
-        public ImageView thumbnail;
+        public final TextView title;
+        public final TextView userrating;
+        public final ImageView thumbnail;
 
         public MyViewHolder(View view){
             super(view);

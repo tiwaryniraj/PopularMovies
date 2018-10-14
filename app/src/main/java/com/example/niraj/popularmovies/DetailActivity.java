@@ -1,7 +1,6 @@
 package com.example.niraj.popularmovies;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -10,8 +9,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -238,7 +235,7 @@ public class DetailActivity extends AppCompatActivity {
             Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT).show();
         }
     }
-    
+
     private void loadReview(){
         try {
             if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {

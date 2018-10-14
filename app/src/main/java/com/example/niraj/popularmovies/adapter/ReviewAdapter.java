@@ -14,8 +14,8 @@ import com.example.niraj.popularmovies.model.ReviewResult;
 import java.util.List;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHolder> {
-    private Context mContext;
-    private List<ReviewResult> reviewResults;
+    private final Context mContext;
+    private final List<ReviewResult> reviewResults;
 
     public ReviewAdapter(Context mContext, List<ReviewResult> reviewResults) {
         this.mContext = mContext;
@@ -46,7 +46,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, url;
+        public final TextView title;
+        public final TextView url;
 
         public MyViewHolder(View view){
             super(view);

@@ -49,7 +49,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.MyViewHo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView title;
+        public final TextView title;
         public ImageView thumbnail;
 
         public MyViewHolder(View view){

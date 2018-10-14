@@ -59,7 +59,8 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView title, userrating;
+        public final TextView title;
+        public final TextView userrating;
         ImageView image;
 
         public MyViewHolder(View view){
