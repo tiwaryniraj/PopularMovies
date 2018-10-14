@@ -14,10 +14,6 @@ public class Trailer {
         this.name = name;
     }
 
-    public Trailer(){
-
-    }
-
     public String getKey(){
         return key;
     }
@@ -33,5 +29,4 @@ public class Trailer {
     public void setName(String name){
         this.name = name;
     }
-
 }

@@ -22,5 +22,4 @@ public class TrailerResponse {
     public List<Trailer> getResults(){
         return results;
     }
-
 }

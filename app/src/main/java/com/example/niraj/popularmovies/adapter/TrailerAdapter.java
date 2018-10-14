@@ -76,5 +76,4 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.MyViewHo
 
         }
     }
-
 }

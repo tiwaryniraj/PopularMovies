@@ -23,6 +23,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
     private Context mContext;
     private List<Movie> movieList;
 
+
     public MoviesAdapter(Context mContext, List<Movie> movieList){
         this.mContext = mContext;
         this.movieList = movieList;
@@ -45,9 +46,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.loading);
 
+        String poster = "https://image.tmdb.org/t/p/w500" + movieList.get(i).getPosterPath();
+
         Glide.with(mContext)
                 .setDefaultRequestOptions(requestOptions)
-                .load(movieList.get(i).getPosterPath())
+                .load(poster)
                 .into(viewHolder.thumbnail);
 
     }
@@ -63,9 +66,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
 
         public MyViewHolder(View view){
             super(view);
-            title =  view.findViewById(R.id.title);
-            userrating =  view.findViewById(R.id.userrating);
-            thumbnail =  view.findViewById(R.id.thumbnail);
+            title = view.findViewById(R.id.title);
+            userrating = view.findViewById(R.id.userrating);
+            thumbnail = view.findViewById(R.id.thumbnail);
 
             view.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -74,11 +77,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
                     if (pos != RecyclerView.NO_POSITION){
                         Movie clickedDataItem = movieList.get(pos);
                         Intent intent = new Intent(mContext, DetailActivity.class);
-                        intent.putExtra("original_title", movieList.get(pos).getOriginalTitle());
-                        intent.putExtra("poster_path", movieList.get(pos).getPosterPath());
-                        intent.putExtra("overview", movieList.get(pos).getOverview());
-                        intent.putExtra("vote_average", Double.toString(movieList.get(pos).getVoteAverage()));
-                        intent.putExtra("release_date", movieList.get(pos).getReleaseDate());
+                        intent.putExtra("movies", clickedDataItem );
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
                         Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getOriginalTitle(), Toast.LENGTH_SHORT).show();
