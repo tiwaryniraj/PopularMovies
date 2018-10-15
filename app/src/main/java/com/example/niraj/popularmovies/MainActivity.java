@@ -75,8 +75,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         initViews();
 
         recyclerView = findViewById(R.id.recycler_view);
-
-        //For testing the recipe collection sorting alphabetically
+        
         TestAdapter testAdapter = new TestAdapter(LayoutInflater.from(this));
         recyclerView.setAdapter(testAdapter);
         testAdapter.setMovie(movieList);
