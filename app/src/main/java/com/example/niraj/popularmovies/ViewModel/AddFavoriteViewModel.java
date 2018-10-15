@@ -6,9 +6,6 @@ import android.arch.lifecycle.ViewModel;
 import com.example.niraj.popularmovies.database.AppDatabase;
 import com.example.niraj.popularmovies.database.FavoriteEntry;
 
-/**
- * Created by delaroy on 9/6/18.
- */
 
 public class AddFavoriteViewModel extends ViewModel {
 

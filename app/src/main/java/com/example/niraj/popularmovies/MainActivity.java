@@ -11,8 +11,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         setContentView(R.layout.activity_main);
         initViews();
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
 
         //For testing the recipe collection sorting alphabetically
         TestAdapter testAdapter = new TestAdapter(LayoutInflater.from(this));
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     private void initViews(){
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
 
         movieList = new ArrayList<>();
         adapter = new MoviesAdapter(this, movieList);
@@ -118,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         favoriteDbHelper = new FavoriteDbHelper(activity);
 
 
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.main_content);
+        swipeContainer = findViewById(R.id.main_content);
         swipeContainer.setColorSchemeResources(android.R.color.holo_orange_dark);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
             @Override
@@ -133,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     private void initViews2(){
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
 
         movieList = new ArrayList<>();
         adapter = new MoviesAdapter(this, movieList);
@@ -196,9 +194,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             Retrofit retrofit = builder.build();
             Service apiService = retrofit.create(Service.class);
 
-            //Client Client = new Client();
-            //Service apiService =
-            //Client.getClient().create(Service.class);
             Call<MoviesResponse> call = apiService.getPopularMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN);
 
             call.enqueue(new Callback<MoviesResponse>() {
@@ -264,9 +259,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             Retrofit retrofit = builder.build();
             Service apiService = retrofit.create(Service.class);
-            //Client Client = new Client();
-            //Service apiService =
-            //Client.getClient().create(Service.class);
+
             Call<MoviesResponse> call = apiService.getTopRatedMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN);
             call.enqueue(new Callback<MoviesResponse>() {
                 @Override
@@ -346,19 +339,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     private void getAllFavorite(){
-        /*new AsyncTask<Void, Void, Void>(){
-            @Override
-            protected Void doInBackground(Void... params){
-                movieList.clear();
-                movieList.addAll(favoriteDbHelper.getAllFavorite());
-                return null;
-            }
-            @Override
-            protected void onPostExecute(Void aVoid){
-                super.onPostExecute(aVoid);
-                adapter.notifyDataSetChanged();
-            }
-        }.execute();*/
+
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         viewModel.getFavorite().observe(this, new Observer<List<FavoriteEntry>>() {
             @Override

@@ -2,8 +2,6 @@ package com.example.niraj.popularmovies;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -59,7 +57,6 @@ public class DetailActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TrailerAdapter adapter;
     private List<Trailer> trailerList;
-    private FavoriteDbHelper favoriteDbHelper;
     private Movie favorite;
     private final AppCompatActivity activity = DetailActivity.this;
     private AppDatabase mDb;
@@ -74,19 +71,17 @@ public class DetailActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FavoriteDbHelper dbHelper = new FavoriteDbHelper(this);
         mDb = AppDatabase.getInstance(getApplicationContext());
 
-        imageView = (ImageView) findViewById(R.id.thumbnail_image_header);
-        // nameOfMovie = (TextView) findViewById(R.id.title);
-        plotSynopsis = (TextView) findViewById(R.id.plotsynopsis);
-        userRating = (TextView) findViewById(R.id.userrating);
-        releaseDate = (TextView) findViewById(R.id.releasedate);
+        imageView = findViewById(R.id.thumbnail_image_header);
+        plotSynopsis = findViewById(R.id.plotsynopsis);
+        userRating = findViewById(R.id.userrating);
+        releaseDate = findViewById(R.id.releasedate);
 
         Intent intentThatStartedThisActivity = getIntent();
         if (intentThatStartedThisActivity.hasExtra("movies")){
@@ -129,7 +124,7 @@ public class DetailActivity extends AppCompatActivity {
         trailerList = new ArrayList<>();
         adapter = new TrailerAdapter(this, trailerList);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view1);
+        recyclerView = findViewById(R.id.recycler_view1);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
