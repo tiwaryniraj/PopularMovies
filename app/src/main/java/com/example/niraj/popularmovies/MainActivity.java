@@ -2,6 +2,8 @@ package com.example.niraj.popularmovies;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -10,7 +12,9 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,10 +27,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.niraj.popularmovies.ViewModel.MainViewModel;
 import com.example.niraj.popularmovies.adapter.MoviesAdapter;
 import com.example.niraj.popularmovies.adapter.TestAdapter;
+import com.example.niraj.popularmovies.api.Client;
 import com.example.niraj.popularmovies.api.Service;
 import com.example.niraj.popularmovies.data.FavoriteDbHelper;
+import com.example.niraj.popularmovies.database.FavoriteEntry;
 import com.example.niraj.popularmovies.model.Movie;
 import com.example.niraj.popularmovies.model.MoviesResponse;
 
@@ -45,7 +52,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     private RecyclerView recyclerView;
     private MoviesAdapter adapter;
@@ -57,22 +64,24 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public static final String LOG_TAG = MoviesAdapter.class.getName();
     final int cacheSize = 10 * 1024 * 1024;
 
+    //private static String LIST_STATE = "list_state";
+    //private Parcelable savedRecyclerLayoutState;
+    //private static final String BUNDLE_RECYCLER_LAYOUT = "recycler_layout";
+    //private ArrayList<Movie> moviesInstance = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initViews();
 
-        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
+        //For testing the recipe collection sorting alphabetically
         TestAdapter testAdapter = new TestAdapter(LayoutInflater.from(this));
         recyclerView.setAdapter(testAdapter);
         testAdapter.setMovie(movieList);
-
-
-
 
     }
 
@@ -90,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     private void initViews(){
 
-        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         movieList = new ArrayList<>();
         adapter = new MoviesAdapter(this, movieList);
@@ -109,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         favoriteDbHelper = new FavoriteDbHelper(activity);
 
 
-        swipeContainer =  findViewById(R.id.main_content);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.main_content);
         swipeContainer.setColorSchemeResources(android.R.color.holo_orange_dark);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
             @Override
@@ -124,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     private void initViews2(){
-        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         movieList = new ArrayList<>();
         adapter = new MoviesAdapter(this, movieList);
@@ -168,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                                 throws IOException {
                             Request request = chain.request();
                             if (!isNetworkAvailable()) {
-                                int maxStale = 60 * 60 * 24 * 28;
+                                int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale \
                                 request = request
                                         .newBuilder()
                                         .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
@@ -187,6 +196,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             Retrofit retrofit = builder.build();
             Service apiService = retrofit.create(Service.class);
 
+            //Client Client = new Client();
+            //Service apiService =
+            //Client.getClient().create(Service.class);
             Call<MoviesResponse> call = apiService.getPopularMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN);
 
             call.enqueue(new Callback<MoviesResponse>() {
@@ -234,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                                 throws IOException {
                             Request request = chain.request();
                             if (!isNetworkAvailable()) {
-                                int maxStale = 60 * 60 * 24 * 28;
+                                int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale \
                                 request = request
                                         .newBuilder()
                                         .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
@@ -252,6 +264,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             Retrofit retrofit = builder.build();
             Service apiService = retrofit.create(Service.class);
+            //Client Client = new Client();
+            //Service apiService =
+            //Client.getClient().create(Service.class);
             Call<MoviesResponse> call = apiService.getTopRatedMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN);
             call.enqueue(new Callback<MoviesResponse>() {
                 @Override
@@ -331,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     private void getAllFavorite(){
-        new AsyncTask<Void, Void, Void>(){
+        /*new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... params){
                 movieList.clear();
@@ -343,6 +358,26 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 super.onPostExecute(aVoid);
                 adapter.notifyDataSetChanged();
             }
-        }.execute();
+        }.execute();*/
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.getFavorite().observe(this, new Observer<List<FavoriteEntry>>() {
+            @Override
+            public void onChanged(@Nullable List<FavoriteEntry> imageEntries) {
+                List<Movie> movies = new ArrayList<>();
+                for (FavoriteEntry entry : imageEntries){
+                    Movie movie = new Movie();
+                    movie.setId(entry.getMovieid());
+                    movie.setOverview(entry.getOverview());
+                    movie.setOriginalTitle(entry.getTitle());
+                    movie.setPosterPath(entry.getPosterpath());
+                    movie.setVoteAverage(entry.getUserrating());
+
+                    movies.add(movie);
+                }
+
+                adapter.setMovies(movies);
+            }
+        });
     }
+
 }

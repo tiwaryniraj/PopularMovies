@@ -20,8 +20,8 @@ import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHolder> {
 
-    private final Context mContext;
-    private final List<Movie> movieList;
+    private Context mContext;
+    private List<Movie> movieList;
 
 
     public MoviesAdapter(Context mContext, List<Movie> movieList){
@@ -53,6 +53,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
                 .load(poster)
                 .into(viewHolder.thumbnail);
 
+    }
+
+    public void setMovies(List<Movie> movie) {
+        movieList = movie;
+        notifyDataSetChanged();
     }
 
     @Override
